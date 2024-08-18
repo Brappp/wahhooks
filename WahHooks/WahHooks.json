@@ -1,0 +1,11 @@
+{
+    "Author": "wah",
+    "Name": "WahHooks",
+    "Punchline": "Manage and send messages to Discord webhooks.",
+    "Description": "A plugin to manage Discord webhooks with nicknames and send messages using commands.",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "discord",
+        "webhook"
+    ]
+}
