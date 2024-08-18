@@ -1,7 +1,11 @@
+# Repo
+```plaintext
+https://raw.githubusercontent.com/Brappp/repo/main/wah.json
+```
 
 # WahHooks Plugin
 
-WahHooks is a Dalamud plugin for Final Fantasy XIV that allows users to manage Discord webhooks and send messages to these webhooks directly from within the game. The plugin also supports Inter-Plugin Communication (IPC), enabling other plugins to trigger webhook messages.
+WahHooks is a Dalamud plugin that allows users to manage Discord webhooks and send messages to these webhooks directly from within the game. The plugin also supports Inter-Plugin Communication (IPC), enabling other plugins to trigger webhook messages.
 
 ## Features
 
