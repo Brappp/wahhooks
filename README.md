@@ -1,76 +1,94 @@
-> ⚠️ **Don't click Fork!**
-> 
-> This is a GitHub Template repo. If you want to use this for a plugin, just [use this template][new-repo] to make a new repo!
->
-> ![image](https://github.com/goatcorp/SamplePlugin/assets/16760685/d9732094-e1ed-4769-a70b-58ed2b92580c)
 
-# SamplePlugin
+# WahHooks Plugin
 
-[![Use This Template badge](https://img.shields.io/badge/Use%20This%20Template-0?logo=github&labelColor=grey)][new-repo]
+WahHooks is a Dalamud plugin for Final Fantasy XIV that allows users to manage Discord webhooks and send messages to these webhooks directly from within the game. The plugin also supports Inter-Plugin Communication (IPC), enabling other plugins to trigger webhook messages.
 
+## Features
 
-Simple example plugin for Dalamud.
+- **Manage Discord Webhooks**: Add, remove, and nickname your webhooks through a user-friendly interface.
+- **Send Messages via Commands**: Easily send messages to specific webhooks using in-game commands.
+- **IPC Integration**: Other plugins can send messages to your webhooks using IPC.
 
-This is not designed to be the simplest possible example, but it is also not designed to cover everything you might want to do. For more detailed questions, come ask in [the Discord](https://discord.gg/holdshift).
+## Commands
 
-## Main Points
+### `/wahhook <index or nickname> <message>`
 
-* Simple functional plugin
-  * Slash command
-  * Main UI
-  * Settings UI
-  * Image loading
-  * Plugin json
-* Simple, slightly-improved plugin configuration handling
-* Project organization
-  * Copies all necessary plugin files to the output directory
-    * Does not copy dependencies that are provided by dalamud
-    * Output directory can be zipped directly and have exactly what is required
-  * Hides data files from visual studio to reduce clutter
-    * Also allows having data files in different paths than VS would usually allow if done in the IDE directly
+- **Description**: Sends a message to the specified webhook.
+- **Usage**:
+  - `/wahhook 1 "This is a message to webhook 1!"`
+  - `/wahhook raid "This is a message to the webhook with the nickname 'cat'!"`
+- **Arguments**:
+  - `index or nickname`: Either the index (starting from 1) or the nickname of the webhook.
+  - `message`: The message you want to send to the webhook.
 
+### `/wahhookconfig`
 
-The intention is less that any of this is used directly in other projects, and more to show how similar things can be done.
+- **Description**: Opens the WahHooks configuration interface where you can manage your webhooks.
+- **Usage**: Simply type `/wahhookconfig` in the chat to open the configuration window.
 
-## How To Use
+## Configuration Interface
 
-### Getting Started
+The configuration interface allows you to:
 
-To begin, [clone this template repository][new-repo] to your own GitHub account. This will automatically bring in everything you need to get a jumpstart on development. You do not need to fork this repository unless you intend to contribute modifications to it.
+- **Manage Webhooks**: View all added webhooks, update their nicknames, or remove them.
+- **Add Webhook**: Add a new webhook by entering its URL and assigning it a nickname.
 
-Be sure to also check out the [Dalamud Developer Docs][dalamud-docs] for helpful information about building your own plugin. The Developer Docs includes helpful information about all sorts of things, including [how to submit][submit] your newly-created plugin to the official repository. Assuming you use this template repository, the provided project build configuration and license are already chosen to make everything a breeze.
+The configuration interface is divided into two tabs:
 
-[new-repo]: https://github.com/new?template_name=SamplePlugin&template_owner=goatcorp
-[dalamud-docs]: https://dalamud.dev
-[submit]: https://dalamud.dev/plugin-development/plugin-submission
+1. **Manage Webhooks**: Here, you can view all your webhooks, update their nicknames, or remove them.
+2. **Add Webhook**: Here, you can add new webhooks by entering the webhook URL and an optional nickname.
 
-### Prerequisites
+### Example of Managing Webhooks
 
-SamplePlugin assumes all the following prerequisites are met:
+```plaintext
+Webhook 1 (raid): https://discord.com/api/webhooks/...
+[Copy] [Remove]
 
-* XIVLauncher, FINAL FANTASY XIV, and Dalamud have all been installed and the game has been run with Dalamud at least once.
-* XIVLauncher is installed to its default directories and configurations.
-  * If a custom path is required for Dalamud's dev directory, it must be set with the `DALAMUD_HOME` environment variable.
-* A .NET Core 8 SDK has been installed and configured, or is otherwise available. (In most cases, the IDE will take care of this.)
+Nickname: raid
+```
 
-### Building
+### Example of Adding a New Webhook
 
-1. Open up `SamplePlugin.sln` in your C# editor of choice (likely [Visual Studio 2022](https://visualstudio.microsoft.com) or [JetBrains Rider](https://www.jetbrains.com/rider/)).
-2. Build the solution. By default, this will build a `Debug` build, but you can switch to `Release` in your IDE.
-3. The resulting plugin can be found at `SamplePlugin/bin/x64/Debug/SamplePlugin.dll` (or `Release` if appropriate.)
+```plaintext
+New Webhook URL: https://discord.com/api/webhooks/...
+New Webhook Nickname: daily-alerts
+[Add Webhook]
+```
 
-### Activating in-game
+## IPC Integration
 
-1. Launch the game and use `/xlsettings` in chat or `xlsettings` in the Dalamud Console to open up the Dalamud settings.
-    * In here, go to `Experimental`, and add the full path to the `SamplePlugin.dll` to the list of Dev Plugin Locations.
-2. Next, use `/xlplugins` (chat) or `xlplugins` (console) to open up the Plugin Installer.
-    * In here, go to `Dev Tools > Installed Dev Plugins`, and the `SamplePlugin` should be visible. Enable it.
-3. You should now be able to use `/pmycommand` (chat) or `pmycommand` (console)!
+WahHooks provides an IPC method that allows other plugins to send messages to your managed webhooks.
 
-Note that you only need to add it to the Dev Plugin Locations once (Step 1); it is preserved afterwards. You can disable, enable, or load your plugin on startup through the Plugin Installer.
+### IPC Method: `WahHook.SendWebhookMessage`
 
-### Reconfiguring for your own uses
+- **Function Name**: `WahHook.SendWebhookMessage`
+- **Parameters**: 
+  - `int`: Index of the webhook (starting from 1).
+  - `string`: The message to be sent.
+- **Returns**: 
+  - `bool`: Returns `true` if the message was successfully sent, `false` otherwise.
 
-Basically, just replace all references to `SamplePlugin` in all of the files and filenames with your desired name, then start building the plugin of your dreams. You'll figure it out 😁
+### Using the IPC in Another Plugin
 
-Dalamud will load the JSON file (by default, `SamplePlugin/SamplePlugin.json`) next to your DLL and use it for metadata, including the description for your plugin in the Plugin Installer. Make sure to update this with information relevant to _your_ plugin!
+Here’s an example of how another plugin might use the IPC method provided by WahHooks:
+
+```csharp
+var sendWebhookMessage = PluginInterface.GetIpcSubscriber<(int, string), bool>("WahHook.SendWebhookMessage");
+
+// Example usage: send a message to the first webhook
+bool result = sendWebhookMessage.InvokeFunc((1, "This is a message from another plugin!"));
+
+if (result)
+{
+    DalamudApi.Chat.Print("Message sent successfully!");
+}
+else
+{
+    DalamudApi.Chat.PrintError("Failed to send the message.");
+}
+```
+
+### IPC Usage Scenarios
+
+- **Automated Alerts**: Other plugins can send automated alerts to Discord when certain in-game events occur.
+- **Data Sharing**: Plugins that collect or generate data can push updates to Discord through WahHooks.
