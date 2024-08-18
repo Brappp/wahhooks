@@ -30,7 +30,6 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        // Display the main content of the window here
 
         if (ImGui.Button("Show Settings"))
         {

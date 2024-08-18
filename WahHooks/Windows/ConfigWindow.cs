@@ -24,12 +24,10 @@ public class ConfigWindow : Window, IDisposable
 
     public override void PreDraw()
     {
-        // This method can be removed if no other PreDraw logic is needed.
     }
 
     public override void Draw()
     {
         ImGui.Text("Configuration window contents go here.");
-        // You can add other configuration options here if needed.
     }
 }

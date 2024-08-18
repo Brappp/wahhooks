@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
 
-namespace WahHooks // Updated namespace to WahHooks
+namespace WahHooks 
 {
-    public sealed class Plugin : IDalamudPlugin // Begin class definition
+    public sealed class Plugin : IDalamudPlugin 
     {
         [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
@@ -28,12 +28,11 @@ namespace WahHooks // Updated namespace to WahHooks
         private MainWindow MainWindow { get; init; }
         private WebhookGui WebhookGui { get; init; }
 
-        public Plugin() // Constructor definition
+        public Plugin() 
         {
             Configuration = Configuration.Load();
             WebhookGui = new WebhookGui(Configuration);
 
-            // Add the new webhook management window
             WindowSystem.AddWindow(WebhookGui);
 
             CommandManager.AddHandler(CommandName, new CommandInfo(OnWahHookCommand)
@@ -58,9 +57,9 @@ namespace WahHooks // Updated namespace to WahHooks
 
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
-        } // End of constructor
+        } 
 
-        public void Dispose() // Dispose method definition
+        public void Dispose() 
         {
             Configuration.Save();
             WindowSystem.RemoveAllWindows();
@@ -74,7 +73,7 @@ namespace WahHooks // Updated namespace to WahHooks
 
             PluginInterface.GetIpcProvider<(int, string), bool>("WahHook.SendWebhookMessage").UnregisterFunc();
             PluginInterface.UiBuilder.OpenMainUi -= ToggleMainUI;
-        } // End of Dispose method
+        } 
 
         private void OnWahHookCommand(string command, string args)
         {
@@ -174,5 +173,5 @@ namespace WahHooks // Updated namespace to WahHooks
 
         public void ToggleConfigUI() => WebhookGui.Toggle();
         public void ToggleMainUI() => MainWindow.Toggle();
-    } // End of class definition
-} // End of namespace definition
+    } 
+} 

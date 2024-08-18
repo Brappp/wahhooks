@@ -43,14 +43,13 @@ public class WebhookGui : Window, IDisposable
         ImGui.Text("Manage your Discord Webhooks:");
         ImGui.Separator();
 
-        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(10, 10)); // Add some spacing between items
+        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(10, 10)); 
 
         // Display the list of webhooks
         for (int i = 0; i < Configuration.Webhooks.Count; i++)
         {
             var webhook = Configuration.Webhooks[i];
 
-            // Create local variables to store the values
             string nickname = webhook.Nickname;
             string url = webhook.Url;
 
@@ -112,7 +111,7 @@ public class WebhookGui : Window, IDisposable
             }
             else
             {
-                ImGui.TextColored(new Vector4(1, 0, 0, 1), "Please enter a valid URL."); // Display error message in red
+                ImGui.TextColored(new Vector4(1, 0, 0, 1), "Please enter a valid URL."); 
             }
         }
     }
